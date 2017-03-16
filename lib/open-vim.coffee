@@ -16,7 +16,7 @@ module.exports =
       @open(vimPath) # call explicitly upon activate, since package is lazy loaded and this setup is async
       return
 
-    vimType = if OS.platform() is "darwin" then "mvim" else "gvim"
+    vimType = if OS.platform() is "darwin" then "vim" else "gvim"
     whichType = if OS.platform() is "win32" then "where" else "which"
     execFile whichType, [vimType], (error, stdout, stderr) =>
       if error
@@ -32,7 +32,7 @@ module.exports =
       filePath = editor.getPath()
       lineNum  = editor.bufferPositionForScreenPosition(editor.getCursorScreenPosition()).row + 1 # +1 to get actual line
       colNum   = editor.bufferPositionForScreenPosition(editor.getCursorScreenPosition()).column + 1
-      execFile vimType, ["--remote-silent", "+call cursor(#{lineNum}, #{colNum})", filePath], (error, stdout, stderr) ->
+      execFile vimType, [filePath], (error, stdout, stderr) ->
         if error
           atom.notifications.addError error.message
 
